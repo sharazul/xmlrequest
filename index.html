@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple XMLHttpRequest Example</title>
+  </head>
+  <body>
+    <h1>Fetch Data</h1>
+    <button id="fetchData">Fetch Data</button>
+    <pre id="output"></pre>
+
+    <script>
+      document
+        .getElementById('fetchData')
+        .addEventListener('click', function () {
+          // Fetch text file
+          const xhrText = new XMLHttpRequest()
+          xhrText.open('GET', 'data.txt', true)
+          xhrText.onload = function () {
+            if (xhrText.status === 200) {
+              document.getElementById('output').textContent +=
+                'Text File Content:\n' + xhrText.responseText + '\n\n'
+            } else {
+              console.error('Error fetching text file:', xhrText.statusText)
+            }
+          }
+          xhrText.send()
+
+          // Fetch XML file
+          const xhrXml = new XMLHttpRequest()
+          xhrXml.open('GET', 'data.xml', true)
+          xhrXml.onload = function () {
+            if (xhrXml.status === 200) {
+              const xmlDoc = xhrXml.responseXML
+              const items = xmlDoc.getElementsByTagName('item')
+              let output = 'XML File Content:\n'
+              for (let i = 0; i < items.length; i++) {
+                output += items[i].textContent + '\n'
+              }
+              document.getElementById('output').textContent += output
+            } else {
+              console.error('Error fetching XML file:', xhrXml.statusText)
+            }
+          }
+          xhrXml.send()
+        })
+    </script>
+  </body>
+</html>
